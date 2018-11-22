@@ -1,0 +1,8 @@
+Reading pickle file tcpout.pickle ...
+Reading pickle file pkts2.pickle ...
+SYN count 17
+RESET count 167
+FIN count 427
+ONGOING count 10526
+FAILED count 0
+done
