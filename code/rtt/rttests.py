@@ -46,7 +46,7 @@ def writeestRTTs(datapath, samples, estimates):
 def calcEST(samples):
     ests = []
     K = 4
-    G = 0.1 # =100 msec
+    G = 0.001 # =100 msec
     alpha = 1/8.0
     beta = 1/4.0
 
