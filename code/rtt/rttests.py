@@ -2,8 +2,27 @@ import sys
 import csv
 import numpy
 
-numpak_r1_rtts_path = "../../data/rtt/numpak/r1.csv"
-numpak_r1_estrtts_path = "../../data/rtt/numpak/r1est.csv"
+datapath = '../../data/rtt/'
+subdirs = ['numpak/', 'bytes/', 'dur/']
+filenames = ['r1', 'r2', 'r3']
+
+# returns ['numpak r1-3, bytesr1-3, durr1-3'] of length 9
+def readAllSamples():
+    allSamples = []
+    for sub in subdirs:
+        for fname in filenames:
+            fullpath = datapath + sub + fname + ".csv"
+            sample = readsamepleRTTs(fullpath)
+            allSamples.append(sample)
+    return allSamples
+
+def writeAllEstimates(allSamples, allEsts):
+    counter = 0
+    for sub in subdirs:
+        for fname in filenames:
+            fullpath = datapath + sub + fname + "est.csv"
+            writeestRTTs(fullpath, allSamples[counter], allEsts[counter])
+            counter += 1
 
 def readsamepleRTTs(datapath):
     sampleRTT = []
@@ -52,10 +71,16 @@ def calcEST(samples):
         counter += 1
     return ests
 
-# get the csv data into array
-numpak_r1_rtts = readsamepleRTTs(numpak_r1_rtts_path)
-# calcuate estimates
-numpak_r1_ets  = calcEST(numpak_r1_rtts)
-# write everything to csv
-writeestRTTs(numpak_r1_estrtts_path, numpak_r1_rtts, numpak_r1_ets)
+# returns ests in order = ['numpak r1-3, bytesr1-3, durr1-3'] of length 9
+def calcAllEst(allSamples):
+    allEsts = []
+    for sample in allSamples:
+        est = calcEST(sample)
+        allEsts.append(est)
+    return allEsts
+
+all_samples = readAllSamples()
+all_ests = calcAllEst(all_samples)
+writeAllEstimates(all_samples, all_ests)
+
 print("done")
